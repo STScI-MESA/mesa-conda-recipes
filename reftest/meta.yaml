@@ -1,0 +1,37 @@
+{% set name = "reftest" %}
+{% set version = "0.2.2" %}
+{% set tag = 'v' + version %}
+
+package:
+  version: '{{ version }}'
+  name: '{{ name|lower }}'
+
+source:
+  git_tag: {{ tag }}
+  git_url: https://github.com/stsci-mesa/reference-file-testing-tool.git
+
+build:
+  number: 0
+  script: python setup.py install
+
+requirements:
+  build:
+    - python
+    - sqlalchemy
+
+  run:
+    - python
+    - sqlalchemy 
+
+about:
+  description: "Automated reference file testing"
+  license: GNU GPLv3
+  license_family: GPL3
+  home: https://github.com/stsci-mesa/reference-file-testing-tool
+  summary: Summary of the package
+  doc_url: 'reference-file-testing-tool.readthedocs.org'
+  dev_url: ''
+  license_file: ''
+
+extra:
+  recipe-maintainers: 'Matthew Hill'
