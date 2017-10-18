@@ -1,0 +1,37 @@
+{% set name = "regtest" %}
+{% set version = "0.1" %}
+{% set tag = 'v' + version %}
+
+package:
+  version: '{{ version }}'
+  name: '{{ name|lower }}'
+
+source:
+  git_tag: {{ tag }}
+  git_url: https://github.com/STScI-MESA/regression-testing-tool
+
+build:
+  number: 0
+  script: python setup.py install
+
+requirements:
+  build:
+    - python
+    - sqlalchemy
+
+  run:
+    - python
+    - sqlalchemy 
+
+about:
+  description: "JWST pipeline regression testing"
+  license: GNU GPLv3
+  license_family: GPL3
+  home: https://github.com/stsci-mesa/regression-testing-tool
+  summary: Summary of the package
+  doc_url: ''
+  dev_url: ''
+  license_file: ''
+
+extra:
+  recipe-maintainers: 'Matthew Hill'

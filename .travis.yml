@@ -1,0 +1,40 @@
+language: c
+
+os:
+  - linux
+  - osx
+
+env:
+  - PYTHON_VERSION=2.7
+  - PYTHON_VERSION=3.5
+  - PYTHON_VERSION=3.6
+    
+# Setup anaconda
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    fi
+  - chmod +x miniconda.sh
+  - ./miniconda.sh -b -p $HOME/miniconda
+  - export PATH=$HOME/miniconda/bin:$PATH
+  - conda update --yes -q conda
+  - conda config --set always_yes true
+  - conda config --set anaconda_upload no
+
+install:
+  - conda install conda-build
+  - conda config --add channels conda-forge
+  - conda config --add channels http://ssb.stsci.edu/astroconda
+  - conda config --add channels defaults
+
+script: 
+  - export CONDA_BLD_PATH=$HOME/conda-bld
+  - conda build --skip-existing --python $PYTHON_VERSION .
+
+after_success:
+  - conda install anaconda-client
+  - anaconda -t $CONDA_UPLOAD_TOKEN upload --force $CONDA_BLD_PATH/*/*.tar.bz2
+
+
